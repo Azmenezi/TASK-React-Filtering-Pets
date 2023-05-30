@@ -3,16 +3,22 @@ import PetItem from "./PetItem";
 import React, { useState } from "react";
 function PetsList() {
   const [query, setQuery] = useState("");
-
+  const [type, setType] = useState("");
   const petList = pets
-    .filter((pet) => pet.name.toUpperCase().startsWith(query.toUpperCase()))
+    .filter(
+      (pet) =>
+        pet.name.toUpperCase().startsWith(query.toUpperCase()) &&
+        pet.type.toUpperCase().startsWith(type.toUpperCase())
+    )
     .map((pet) => <PetItem pet={pet} key={pet.id} />);
 
   function searchBar(event) {
-    event.preventDefault();
     setQuery(event.target.value);
   }
 
+  function searchType(event) {
+    setType(event.target.value);
+  }
   return (
     <section id="doctors" className="doctor-section pt-140">
       <div className="container">
@@ -34,7 +40,7 @@ function PetsList() {
               </div>
               <br />
               Type:
-              <select className="form-select">
+              <select className="form-select" onChange={searchType}>
                 <option value="" selected>
                   All
                 </option>

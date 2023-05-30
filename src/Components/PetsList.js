@@ -4,13 +4,15 @@ import React, { useState } from "react";
 function PetsList() {
   const [query, setQuery] = useState("");
   const [type, setType] = useState("");
-  const petList = pets
+  const [adopt, setAdopt] = useState(pets);
+
+  const petList = adopt
     .filter(
       (pet) =>
-        pet.name.toUpperCase().startsWith(query.toUpperCase()) &&
-        pet.type.toUpperCase().startsWith(type.toUpperCase())
+        pet.name.toUpperCase().includes(query.toUpperCase()) &&
+        pet.type.toUpperCase().match(type.toUpperCase())
     )
-    .map((pet) => <PetItem pet={pet} key={pet.id} />);
+    .map((pet) => <PetItem pet={pet} key={pet.id} handleAdopt={handleAdopt} />);
 
   function searchBar(event) {
     setQuery(event.target.value);
@@ -18,6 +20,14 @@ function PetsList() {
 
   function searchType(event) {
     setType(event.target.value);
+  }
+  function handleAdopt(petId) {
+    if (window.confirm("Are you sure you want to adopt?!") == true) {
+      let filteredList = adopt.filter((pet) => pet.id != petId);
+      setAdopt(filteredList);
+    } else {
+      return;
+    }
   }
   return (
     <section id="doctors" className="doctor-section pt-140">
